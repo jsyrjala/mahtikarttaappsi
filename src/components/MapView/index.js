@@ -28,7 +28,7 @@ export class MapView extends Component {
     this.actions.update([position.lat, position.lng], zoom)
   }
   handleResize() {
-    this.refs.container.style.height = (window.innerHeight - 100 ) + 'px';
+    this.refs.container.style.height = (window.innerHeight - 85 ) + 'px';
   }
   componentDidMount() {
     this.handleResize()
