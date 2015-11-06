@@ -3,13 +3,27 @@
 :local(.styles) {
   background: black;
   padding: 10px 20px;
+  position: fixed;
+  z-index: 9999;
+  width: 100vw;
+  height: 50px + 2 * 10px;
+  .container {
+    background-color: black;
+    width: 100vw;
+    margin-left: -20px;
+    margin-right: -10px;
+  }
+  .navbar-header {
+    padding-right: 20px;
+  }
   .navbar-brand {
     color: white !important;
   }
   ul a {
+    z-index: 1000;
+
     color: #FFF !important;
     text-decoration: underline;
-    width: 100%;
     display: inline-block;
   }
 }

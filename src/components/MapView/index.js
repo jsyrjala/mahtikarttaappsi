@@ -27,6 +27,15 @@ export class MapView extends Component {
     const zoom = leaflet.getZoom()
     this.actions.update([position.lat, position.lng], zoom)
   }
+  handleResize(e) {
+    console.log('resize', window.innerWidth, window.innerHeight)
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
   render() {
     return (
       <div className="map-container">

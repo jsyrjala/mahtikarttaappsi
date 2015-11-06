@@ -5,4 +5,9 @@
 
 :global(body) {
   position: relative;
+  main.container {
+    padding-top: 50px + 2*10px + 15px;
+  }
 }
+
+
