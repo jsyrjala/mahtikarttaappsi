@@ -17,7 +17,7 @@ export class Header extends Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <span className="navbar-brand">Redux easy boilerplate</span>
+            <span className="navbar-brand">Mahtikarttappsi</span>
           </div>
           <div id="navbar" className="header__navbar navbar-collapse collapse">
             <ul className="nav navbar-nav">

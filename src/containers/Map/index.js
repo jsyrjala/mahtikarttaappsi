@@ -4,7 +4,7 @@ import DocumentMeta from 'react-document-meta';
 import { MapView } from 'components';
 
 const metaData = {
-  title: 'Simple Title',
+  title: 'Map page',
   description: 'I\'m a description. I can to create multiple tags',
   canonical: 'http://example.com/path/to/page',
   meta: {
@@ -20,7 +20,6 @@ export class Map extends Component {
     return (
       <div>
         <DocumentMeta {...metaData} />
-        <h1>Map page</h1>
         <MapView />
       </div>
     );
