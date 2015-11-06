@@ -19,6 +19,7 @@ export class MapView extends Component {
   constructor(props) {
     super(props);
     this.actions = bindActionCreators(actionCreators, this.props.dispatch);
+    this.polylines = {}
   }
 
   location() {
@@ -52,6 +53,18 @@ export class MapView extends Component {
     }
   }
 
+  updatePolyline(event) {
+    if(this.polylines[event.city]) {
+      const polyline = this.polylines[event.city]
+      polyline.spliceLatLngs(polyline.getLatLngs(), 0, event.loc)
+    } else {
+      const polyline = L.polyline([event.loc], {color: 'red'})
+      this.polylines[event.city] = polyline
+      polyline.city = event.city
+      polyline.addTo(this.getMap())
+    }
+
+  }
   startWebSocket() {
     try {
       this.ws = new WebSocket('ws://localhost:3100/ws')
@@ -61,9 +74,11 @@ export class MapView extends Component {
           return
         }
         // the react way
-        this.actions.addCoordinate(JSON.parse(e.data))
+        //this.actions.addCoordinate(msg)
         // the other way
-        //this.updateMarker(JSON.parse(e.data))
+        //this.updateMarker(msg)
+
+        this.updatePolyline(msg)
       }
     } catch(e) {
       console.log('websocket', e)
@@ -73,6 +88,7 @@ export class MapView extends Component {
     if(this.ws) {
       this.ws.close()
       this.marker = undefined
+      this.polylines = {}
     }
   }
   componentDidMount() {
@@ -116,7 +132,6 @@ export class MapView extends Component {
               <span>Ruhtinashuvila<br/><a href="http://www.nitor.fi">CodeCamp</a></span>
             </Popup>
           </Marker>
-          {this.markers()}
         </Map>
       </div>
     )

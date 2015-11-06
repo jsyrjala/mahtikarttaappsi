@@ -25,7 +25,7 @@ function sender(ws) {
       coordinateIndex = 0
     }
     function nextCoordinate() {
-      setTimeout(sendCoordinate, 200);
+      setTimeout(sendCoordinate, 50);
     }
     try {
       var features = geodata.features
