@@ -60,7 +60,9 @@ export class MapView extends Component {
         if(!msg.loc) {
           return
         }
+        // the react way
         this.actions.addCoordinate(JSON.parse(e.data))
+        // the other way
         //this.updateMarker(JSON.parse(e.data))
       }
     } catch(e) {
@@ -87,7 +89,8 @@ export class MapView extends Component {
     if(_.isEmpty(this.props.map.coordinates)) {
       return
     }
-    const coordinate = this.props.map.coordinates[0]
+    const coordinates = this.props.map.coordinates
+    const coordinate = _.last(coordinates)
     return (
       <Marker position={coordinate.loc}>
         <Popup>
