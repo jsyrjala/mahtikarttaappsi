@@ -5,10 +5,13 @@ import rootReducer from '../reducers';
 
 const logger = createLogger({collapsed: true});
 
+import {persistStore, autoRehydrate} from 'redux-persist'
+const createPersistedStore = autoRehydrate()(createStore)
+
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
   logger
-)(createStore);
+)(createPersistedStore);
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState);
@@ -20,6 +23,8 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextRootReducer);
     });
   }
+
+  persistStore(store)
 
   return store;
 }
