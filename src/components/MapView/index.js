@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from './styles';
+import L from 'leaflet';
+import _ from 'lodash';
+
 /* actions */
 import * as actionCreators from 'actions/map';
 
@@ -21,8 +24,11 @@ export class MapView extends Component {
   location() {
     return this.props.map
   }
+  getMap() {
+    return this.refs.map.leafletElement
+  }
   storeState() {
-    const leaflet = this.refs.map.leafletElement
+    const leaflet = this.getMap()
     const position = leaflet.getCenter()
     const zoom = leaflet.getZoom()
     this.actions.update([position.lat, position.lng], zoom)
@@ -30,13 +36,67 @@ export class MapView extends Component {
   handleResize() {
     this.refs.container.style.height = (window.innerHeight - 85 ) + 'px';
   }
+  updateMarker(event) {
+    if(!event.loc) {
+      return
+    }
+    var coordinate = L.latLng(event.loc, event.city)
+    if(this.marker) {
+      console.log('update marker', coordinate, event.city)
+      this.marker.setLatLng(coordinate)
+      this.marker.update()
+      //console.log(this.getMap().hasLayer(this.marker))
+    } else {
+      this.marker = L.marker(coordinate)
+      this.marker.addTo(this.getMap())
+    }
+  }
+
+  startWebSocket() {
+    try {
+      this.ws = new WebSocket('ws://localhost:3100/ws')
+      this.ws.onmessage = (e) => {
+        var msg = JSON.parse(e.data)
+        if(!msg.loc) {
+          return
+        }
+        this.actions.addCoordinate(JSON.parse(e.data))
+        //this.updateMarker(JSON.parse(e.data))
+      }
+    } catch(e) {
+      console.log('websocket', e)
+    }
+  }
+  stopWebSocket() {
+    if(this.ws) {
+      this.ws.close()
+      this.marker = undefined
+    }
+  }
   componentDidMount() {
     this.handleResize()
     window.addEventListener('resize', () => this.handleResize());
+    this.startWebSocket()
   }
   componentWillUnmount() {
     window.removeEventListener('resize', () => this.handleResize());
+    this.stopWebSocket()
   }
+
+  markers() {
+    if(_.isEmpty(this.props.map.coordinates)) {
+      return
+    }
+    const coordinate = this.props.map.coordinates[0]
+    return (
+      <Marker position={coordinate.loc}>
+        <Popup>
+          <span>{coordinate.city}</span>
+        </Popup>
+      </Marker>
+    )
+  }
+
   render() {
     return (
       <div className='map-container' ref='container'>
@@ -53,6 +113,7 @@ export class MapView extends Component {
               <span>Ruhtinashuvila<br/><a href="http://www.nitor.fi">CodeCamp</a></span>
             </Popup>
           </Marker>
+          {this.markers()}
         </Map>
       </div>
     )

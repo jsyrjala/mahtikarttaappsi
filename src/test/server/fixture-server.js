@@ -16,16 +16,28 @@ function sender(ws) {
   var cityIndex = 0
   var coordinateIndex = 0
 
+
   return function sendCoordinate() {
+    function nextCity() {
+      cityIndex++
+      coordinateIndex = 0
+    }
+    function nextCoordinate() {
+      setTimeout(sendCoordinate, 200);
+    }
     try {
       var features = geodata.features
       var city = features[cityIndex]
+
       var coordinates = city.geometry.coordinates[0]
+      if(!coordinates) {
+        nextCoordinate()
+      }
       var coordinate = coordinates[coordinateIndex]
       var cityName = city.properties.name
       ws.send(JSON.stringify(
         {
-          loc: coordinate,
+          loc: [coordinate[1], coordinate[0]], // note order
           city: cityName
         }))
 
@@ -34,10 +46,9 @@ function sender(ws) {
       )
       coordinateIndex++
       if (coordinateIndex >= coordinates.length) {
-        cityIndex++
-        coordinateIndex = 0
+        nextCity()
       }
-      setTimeout(sendCoordinate, 200);
+      nextCoordinate()
     } catch(e) {
       console.log('error', e)
     }

@@ -5,3 +5,10 @@ export function update(position, zoom) {
     zoom,
   };
 }
+
+export function addCoordinate(event) {
+  return {
+    type: 'ADD_COORDINATE',
+    event
+  }
+}
