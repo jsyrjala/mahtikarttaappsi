@@ -21,6 +21,8 @@ export class Items extends Component {
   }
 
   onAddClick() {
+    console.log('actions', this.actions)
+
     if (this.refs.text.value) {
       this.actions.add(this.refs.text.value);
       this.refs.text.value = '';
