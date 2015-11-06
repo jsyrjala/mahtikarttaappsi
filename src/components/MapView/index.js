@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-
+import styles from './styles';
 /* actions */
 import * as actionCreators from 'actions/map';
 
@@ -29,7 +29,7 @@ export class MapView extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="map-container">
         <Map ref='map'
              center={this.location().position} zoom={this.location().zoom}
              onLeafletMoveend={() => this.storeState()}

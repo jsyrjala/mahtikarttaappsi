@@ -18,7 +18,6 @@ export class App extends Component {
         <main className="container">
           {this.props.children}
         </main>
-        <Footer />
       </div>
     );
   }
