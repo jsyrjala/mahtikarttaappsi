@@ -20,7 +20,8 @@ export function auth(state = initialState, action) {
       return {
         ...state,
         auth: {
-          username: action.username,
+          username: action.payload.username,
+          token: action.payload.token,
           status: 'logged-in'
         }
       }

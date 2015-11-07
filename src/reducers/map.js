@@ -15,8 +15,8 @@ export function map(state = initialState, action) {
         ...state,
         map: {
           ...mapState,
-          position: action.position,
-          zoom: action.zoom,
+          position: action.payload.position,
+          zoom: action.payload.zoom,
         },
       };
 
@@ -26,7 +26,7 @@ export function map(state = initialState, action) {
         ...state,
         map: {
           ...mapState,
-          coordinates: [action.event]
+          coordinates: [action.payload.event]
         }
       }
 

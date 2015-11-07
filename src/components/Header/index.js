@@ -14,11 +14,11 @@ import * as actionCreators from 'actions/auth';
 export class Header extends Component {
   constructor(props) {
     super(props);
-    console.log('props', this.props)
     this.actions = bindActionCreators(actionCreators, this.props.dispatch);
   }
   login() {
-    this.actions.executeLogin(this.refs.username, this.refs.password)
+    console.log('login',this.refs.username)
+    this.actions.executeLogin(this.refs.username.value, this.refs.password.value)
   }
   render() {
     return (

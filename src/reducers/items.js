@@ -10,7 +10,7 @@ export function items(state = initialState, action) {
       items: [
         ...state.items,
         {
-          text: action.text,
+          text: action.payload.text,
           numb: state.items.length + 1,
         },
       ],

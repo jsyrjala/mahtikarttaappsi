@@ -1,5 +1,6 @@
 var express = require('express')
 var app = express()
+var cors = require('cors')
 var expressWs = require('express-ws')(app);
 var _ = require('lodash')
 var jwt = require('jsonwebtoken')
@@ -10,7 +11,7 @@ var geodata = require('../../../data/kuntarajat-ok.json');
 app.use(express.static('public'));
 
 app.use( bodyParser.json() );
-
+app.use( cors() )
 var users ={
   foo: 'bar',
   'john': 'pass'

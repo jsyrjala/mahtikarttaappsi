@@ -1,4 +1,3 @@
-import $ from 'jquery'
 export function requestLogin(username) {
   console.log('action: login')
   return {
@@ -14,11 +13,14 @@ export function logout() {
   };
 }
 
-export function loggedIn(username) {
+export function loggedIn(username, token) {
   console.log('action: loggedIn')
   return {
     type: 'LOGGED_IN',
-    username,
+    payload: {
+      username,
+      token,
+    }
   };
 }
 
@@ -30,27 +32,37 @@ export function loginFailed() {
 }
 
 export function executeLogin(username, password) {
-  console.log('action: executeLogin')
   return dispatch => {
-    console.log('Starting login', dispatch)
     dispatch(requestLogin())
-    console.log('before ajax')
 
-    //return dispatch(loginFailed())
+    function checkStatus(response) {
+      if (response.status >= 200 && response.status < 300) {
+        return response
+      } else {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error
+      }
+    }
 
-    return $.ajax({
-      type: "POST",
-      url: "/login",
-      data: {username: username, password: password},
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-    }).then(() => {
-      console.log('Logged in')
-      return dispatch(loggedIn(username))
-    }, () => {
-      console.log('login fail')
-      return dispatch(loginFailed())
+    var data = JSON.stringify({
+      'username': username,
+      'password': password,
     })
+    return fetch('http://localhost:3100/login', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: data
+    }).then(checkStatus)
+      .then((response) => {
+        if(response.status )
+          return dispatch(loggedIn(username, response.json().token))
+      }).catch(() => {
+        return dispatch(loginFailed())
+      })
 
   }
 }
