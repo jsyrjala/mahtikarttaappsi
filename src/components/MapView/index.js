@@ -57,6 +57,7 @@ export class MapView extends Component {
    ]
 
   updatePolyline(event) {
+    this.updateMarker(event)
     if(this.polylines[event.city]) {
       const polyline = this.polylines[event.city]
       polyline.spliceLatLngs(polyline.getLatLngs(), 0, event.loc)
