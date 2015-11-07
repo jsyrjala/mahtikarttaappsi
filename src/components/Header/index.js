@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 
 /* component styles */
 import styles from './styles';
 
+import * as actionCreators from 'actions/auth';
+
+@connect(state => {
+  return state.auth
+})
 export class Header extends Component {
+  constructor(props) {
+    super(props);
+    console.log('props', this.props)
+    this.actions = bindActionCreators(actionCreators, this.props.dispatch);
+  }
+  login() {
+    this.actions.executeLogin(this.refs.username, this.refs.password)
+  }
   render() {
     return (
       <nav className={`${styles} navbar navbar-default`}>
@@ -29,6 +44,11 @@ export class Header extends Component {
               </li>
               <li>
                 <Link to="/map" activeClassName="active">Map</Link>
+              </li>
+              <li>
+                <input ref="username"/>
+                <input type="password" ref="password"/>
+                <button onClick={() => this.login()}>Login</button>
               </li>
             </ul>
           </div>

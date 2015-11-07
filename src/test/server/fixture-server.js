@@ -19,10 +19,12 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-var secret = 'fsdjdsflkjlv'
+var secret = 'lorem ipsum'
+
 app.post('/login', function(req, res) {
   var username = req.body.username
   var password = req.body.password
+  console.log('User ' + username + ' tries to login')
   res.append('Content-Type', 'application/json')
 
   if(users[username] === password) {
