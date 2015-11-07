@@ -52,13 +52,17 @@ export class MapView extends Component {
       this.marker.addTo(this.getMap())
     }
   }
+   palette = [
+     'blue', 'red', 'green', 'violet', 'black', 'white', 'purple',
+   ]
 
   updatePolyline(event) {
     if(this.polylines[event.city]) {
       const polyline = this.polylines[event.city]
       polyline.spliceLatLngs(polyline.getLatLngs(), 0, event.loc)
     } else {
-      const polyline = L.polyline([event.loc], {color: 'red'})
+      const color = this.palette[_.random(this.palette.length)]
+      const polyline = L.polyline([event.loc], {color: color})
       this.polylines[event.city] = polyline
       polyline.city = event.city
       polyline.addTo(this.getMap())
