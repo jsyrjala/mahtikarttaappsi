@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-
+// TODO why import doesn't work?s
+//import { spinnerImage } from './ajax-loader.gif';
+var spinnerImage = require('./ajax-loader.gif')
 /* component styles */
 import styles from './styles';
 
@@ -24,7 +26,7 @@ export class Header extends Component {
   }
   loginInput() {
     if(this.props.auth.status == 'pending') {
-      return (<li className="auth">Logging in</li>)
+      return (<li className="auth">Logging in <img src={spinnerImage}></img></li>)
     }
     if(this.props.auth.status === 'logged-in') {
       return (<li>
