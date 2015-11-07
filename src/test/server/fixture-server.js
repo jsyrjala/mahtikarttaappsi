@@ -2,13 +2,47 @@ var express = require('express')
 var app = express()
 var expressWs = require('express-ws')(app);
 var _ = require('lodash')
-var geodata = parsedJSON = require('../../../data/kuntarajat-ok.json');
+var jwt = require('jsonwebtoken')
+var bodyParser = require('body-parser')
+
+var geodata = require('../../../data/kuntarajat-ok.json');
+
 app.use(express.static('public'));
 
+app.use( bodyParser.json() );
 
+var users ={
+  foo: 'bar',
+  'john': 'pass'
+}
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
+
+var secret = 'fsdjdsflkjlv'
+app.post('/login', function(req, res) {
+  var username = req.body.username
+  var password = req.body.password
+  res.append('Content-Type', 'application/json')
+
+  if(users[username] === password) {
+    var token = jwt.sign({ username: username }, secret);
+
+    var result = {
+      token: token
+    }
+    res.status(201)
+    res.send(JSON.stringify(result))
+    return
+  }
+
+  var result = {
+    error: 'login fail'
+  }
+  res.status(403)
+  res.send(JSON.stringify(result))
+})
+
 app.listen(3100)
 
 function sender(ws) {
