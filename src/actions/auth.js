@@ -1,3 +1,6 @@
+import WebSocketService from 'service/WebSocketService'
+
+
 export function requestLogin(username) {
   console.log('action: login')
   return {
@@ -8,6 +11,8 @@ export function requestLogin(username) {
 
 export function logout() {
   console.log('action: logout')
+  WebSocketService.stopWebSocket()
+
   return {
     type: 'LOGOUT'
   };
@@ -15,6 +20,7 @@ export function logout() {
 
 export function loggedIn(username, token) {
   console.log('action: loggedIn')
+  WebSocketService.startWebSocket()
   return {
     type: 'LOGGED_IN',
     payload: {

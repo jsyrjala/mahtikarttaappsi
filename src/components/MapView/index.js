@@ -5,6 +5,7 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from './styles';
 import L from 'leaflet';
 import _ from 'lodash';
+import WebSocketService from 'service/WebSocketService'
 
 /* actions */
 import * as actionCreators from 'actions/map';
@@ -43,10 +44,8 @@ export class MapView extends Component {
     }
     var coordinate = L.latLng(event.loc, event.city)
     if(this.marker) {
-      console.log('update marker', coordinate, event.city)
       this.marker.setLatLng(coordinate)
       this.marker.update()
-      //console.log(this.getMap().hasLayer(this.marker))
     } else {
       this.marker = L.marker(coordinate)
       this.marker.addTo(this.getMap())
@@ -96,14 +95,17 @@ export class MapView extends Component {
       this.polylines = {}
     }
   }
+
   componentDidMount() {
     this.handleResize()
     window.addEventListener('resize', () => this.handleResize());
-    this.startWebSocket()
+    WebSocketService.registerMap(this.getMap())
+    //this.startWebSocket()
   }
   componentWillUnmount() {
     window.removeEventListener('resize', () => this.handleResize());
-    this.stopWebSocket()
+    //this.stopWebSocket()
+    WebSocketService.unregisterMap()
   }
 
   markers() {
