@@ -28,6 +28,11 @@ app.post('/login', function(req, res) {
   console.log('User ' + username + ' tries to login')
   res.append('Content-Type', 'application/json')
 
+  function delayedSend(res, result) {
+    setTimeout(function() {
+      res.send(JSON.stringify(result))
+    }, 1000)
+  }
   if(users[username] === password) {
     var token = jwt.sign({ username: username }, secret);
 
@@ -35,7 +40,7 @@ app.post('/login', function(req, res) {
       token: token
     }
     res.status(201)
-    res.send(JSON.stringify(result))
+    delayedSend(res, result)
     return
   }
 
@@ -43,7 +48,8 @@ app.post('/login', function(req, res) {
     error: 'login fail'
   }
   res.status(403)
-  res.send(JSON.stringify(result))
+  delayedSend(res, result)
+
 })
 
 app.listen(3100)

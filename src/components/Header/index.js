@@ -17,10 +17,28 @@ export class Header extends Component {
     this.actions = bindActionCreators(actionCreators, this.props.dispatch);
   }
   login() {
-    console.log('login',this.refs.username)
     this.actions.executeLogin(this.refs.username.value, this.refs.password.value)
   }
+  logout() {
+    this.actions.logout()
+  }
+  loginInput() {
+    if(this.props.auth.status == 'pending') {
+      return (<li className="auth">Logging in</li>)
+    }
+    if(this.props.auth.status === 'logged-in') {
+      return (<li>
+        <button onClick={() => this.logout()}>Logout</button>
+      </li>)
+    }
+    return (<li>
+      <input ref="username"/>
+      <input type="password" ref="password"/>
+      <button onClick={() => this.login()}>Login</button>
+    </li>)
+  }
   render() {
+
     return (
       <nav className={`${styles} navbar navbar-default`}>
         <div className="container">
@@ -45,11 +63,7 @@ export class Header extends Component {
               <li>
                 <Link to="/map" activeClassName="active">Map</Link>
               </li>
-              <li>
-                <input ref="username"/>
-                <input type="password" ref="password"/>
-                <button onClick={() => this.login()}>Login</button>
-              </li>
+              {this.loginInput()}
             </ul>
           </div>
         </div>
