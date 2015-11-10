@@ -17,3 +17,9 @@ And open in browser: [http://localhost:3000](http://localhost:3000)
 ```
 $ npm test
 ```
+
+## Get test data
+```
+mkdir data
+curl https://raw.githubusercontent.com/tomimick/mapcolorizer/master/data-finland/data/kuntarajat-ok.geojson > data/kuntarajat-ok.json
+```
