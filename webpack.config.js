@@ -1,3 +1,5 @@
+// promise polyfill for old node versions
+require('es6-promise').polyfill();
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
