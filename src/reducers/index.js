@@ -4,6 +4,7 @@ import { simple } from './simple';
 import { items } from './items';
 import { map } from './map';
 import { auth } from './auth'
+import { websocket } from './websocket'
 
 import { isFSA } from 'flux-standard-action';
 

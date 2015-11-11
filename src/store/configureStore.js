@@ -3,7 +3,13 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
 
-const logger = createLogger({collapsed: true});
+const logger = createLogger({
+  collapsed: true,
+  duration: true,
+  predicate: (getState, action) => {
+    return ! _.contains(['WEBSOCKET_MESSAGE'], action.type)
+  }
+});
 
 import {persistStore, autoRehydrate} from 'redux-persist'
 const createPersistedStore = autoRehydrate()(createStore)
